@@ -1,18 +1,10 @@
 /**
  * TransitOps API Service Layer
- * All API calls are isolated here for easy backend integration.
- * Replace BASE_URL and remove dummy data imports when backend is ready.
+ * Fully connected to the Node.js + Express backend service.
  */
 
 import axios from 'axios';
-import {
-  dummyVehicles, dummyDrivers, dummyTrips, dummyMaintenance,
-  dummyFuelLogs, dummyExpenses, dummyNotifications, dashboardKPIs,
-  monthlyRevenueData, fleetUtilizationData, fuelCostData,
-  vehicleStatusData, tripsByRegionData, driverSafetyData
-} from '../utils/dummy';
 
-// ===== AXIOS INSTANCE =====
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 const api = axios.create({
@@ -44,341 +36,197 @@ api.interceptors.response.use(
   }
 );
 
-// ===== SIMULATE DELAY (remove in production) =====
-const delay = (ms = 400) => new Promise(resolve => setTimeout(resolve, ms));
-
 // ===== AUTH API =====
 export const authAPI = {
-  /**
-   * Login user
-   * @param {string} email
-   * @param {string} password
-   * @param {string} role
-   */
-  login: async (email, password, role) => {
-    // TODO: Replace with: return api.post('/auth/login', { email, password });
-    await delay(800);
-    return { success: true, token: 'mock-jwt-token', message: 'Login successful' };
+  login: async (email, password) => {
+    return api.post('/auth/login', { email, password });
   },
 
   logout: async () => {
-    // TODO: Replace with: return api.post('/auth/logout');
-    await delay(200);
-    return { success: true };
-  },
-
-  forgotPassword: async (email) => {
-    // TODO: Replace with: return api.post('/auth/forgot-password', { email });
-    await delay(600);
-    return { success: true, message: 'Password reset email sent' };
+    return api.post('/auth/logout');
   },
 };
 
 // ===== DASHBOARD API =====
 export const dashboardAPI = {
   getKPIs: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/dashboard/kpis', { params: filters });
-    await delay(500);
-    return dashboardKPIs;
+    return api.get('/dashboard/kpis', { params: filters });
   },
 
   getRecentTrips: async () => {
-    // TODO: Replace with: return api.get('/dashboard/recent-trips');
-    await delay(400);
-    return dummyTrips.slice(0, 6);
-  },
-
-  getActivityTimeline: async () => {
-    // TODO: Replace with: return api.get('/dashboard/activity');
-    await delay(300);
-    return [];
+    return api.get('/dashboard/recent-trips');
   },
 };
 
 // ===== VEHICLES API =====
 export const vehiclesAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/vehicles', { params: filters });
-    await delay(400);
-    return dummyVehicles;
+    return api.get('/vehicles', { params: filters });
   },
 
   getById: async (id) => {
-    // TODO: Replace with: return api.get(`/vehicles/${id}`);
-    await delay(300);
-    return dummyVehicles.find(v => v.id === id);
+    return api.get(`/vehicles/${id}`);
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/vehicles', data);
-    await delay(600);
-    return { ...data, id: `V${Date.now()}` };
+    return api.post('/vehicles', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/vehicles/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/vehicles/${id}`, data);
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/vehicles/${id}`);
-    await delay(400);
-    return { success: true };
-  },
-
-  getStatusSummary: async () => {
-    // TODO: Replace with: return api.get('/vehicles/status-summary');
-    await delay(300);
-    return vehicleStatusData;
+    return api.delete(`/vehicles/${id}`);
   },
 };
 
 // ===== DRIVERS API =====
 export const driversAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/drivers', { params: filters });
-    await delay(400);
-    return dummyDrivers;
+    return api.get('/drivers', { params: filters });
   },
 
   getById: async (id) => {
-    // TODO: Replace with: return api.get(`/drivers/${id}`);
-    await delay(300);
-    return dummyDrivers.find(d => d.id === id);
+    return api.get(`/drivers/${id}`);
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/drivers', data);
-    await delay(600);
-    return { ...data, id: `D${Date.now()}` };
+    return api.post('/drivers', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/drivers/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/drivers/${id}`, data);
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/drivers/${id}`);
-    await delay(400);
-    return { success: true };
-  },
-
-  getSafetyData: async () => {
-    // TODO: Replace with: return api.get('/drivers/safety-summary');
-    await delay(300);
-    return driverSafetyData;
+    return api.delete(`/drivers/${id}`);
   },
 };
 
 // ===== TRIPS API =====
 export const tripsAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/trips', { params: filters });
-    await delay(400);
-    return dummyTrips;
+    return api.get('/trips', { params: filters });
   },
 
   getById: async (id) => {
-    // TODO: Replace with: return api.get(`/trips/${id}`);
-    await delay(300);
-    return dummyTrips.find(t => t.id === id);
+    return api.get(`/trips/${id}`);
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/trips', data);
-    await delay(700);
-    return { ...data, id: `TR${Date.now()}`, status: 'Draft' };
+    return api.post('/trips', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/trips/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/trips/${id}`, data);
   },
 
   updateStatus: async (id, status) => {
-    // TODO: Replace with: return api.patch(`/trips/${id}/status`, { status });
-    await delay(400);
-    return { id, status, success: true };
+    return api.patch(`/trips/${id}/status`, { status });
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/trips/${id}`);
-    await delay(400);
-    return { success: true };
+    return api.delete(`/trips/${id}`);
   },
 };
 
 // ===== MAINTENANCE API =====
 export const maintenanceAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/maintenance', { params: filters });
-    await delay(400);
-    return dummyMaintenance;
+    return api.get('/maintenance', { params: filters });
   },
 
   getById: async (id) => {
-    // TODO: Replace with: return api.get(`/maintenance/${id}`);
-    await delay(300);
-    return dummyMaintenance.find(m => m.id === id);
+    return api.get(`/maintenance/${id}`);
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/maintenance', data);
-    await delay(600);
-    return { ...data, id: `MNT${Date.now()}` };
+    return api.post('/maintenance', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/maintenance/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/maintenance/${id}`, data);
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/maintenance/${id}`);
-    await delay(400);
-    return { success: true };
+    return api.delete(`/maintenance/${id}`);
   },
 };
 
 // ===== FUEL API =====
 export const fuelAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/fuel', { params: filters });
-    await delay(400);
-    return dummyFuelLogs;
+    return api.get('/fuel', { params: filters });
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/fuel', data);
-    await delay(600);
-    return { ...data, id: `FL${Date.now()}` };
+    return api.post('/fuel', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/fuel/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/fuel/${id}`, data);
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/fuel/${id}`);
-    await delay(400);
-    return { success: true };
+    return api.delete(`/fuel/${id}`);
   },
 
   getCostData: async () => {
-    // TODO: Replace with: return api.get('/fuel/cost-data');
-    await delay(300);
-    return fuelCostData;
+    return api.get('/fuel/cost-data');
   },
 };
 
 // ===== EXPENSES API =====
 export const expensesAPI = {
   getAll: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/expenses', { params: filters });
-    await delay(400);
-    return dummyExpenses;
+    return api.get('/expenses', { params: filters });
   },
 
   create: async (data) => {
-    // TODO: Replace with: return api.post('/expenses', data);
-    await delay(600);
-    return { ...data, id: `EXP${Date.now()}` };
+    return api.post('/expenses', data);
   },
 
   update: async (id, data) => {
-    // TODO: Replace with: return api.put(`/expenses/${id}`, data);
-    await delay(500);
-    return { ...data, id };
+    return api.put(`/expenses/${id}`, data);
   },
 
   delete: async (id) => {
-    // TODO: Replace with: return api.delete(`/expenses/${id}`);
-    await delay(400);
-    return { success: true };
+    return api.delete(`/expenses/${id}`);
   },
 };
 
 // ===== REPORTS API =====
 export const reportsAPI = {
   getFleetUtilization: async () => {
-    // TODO: Replace with: return api.get('/reports/fleet-utilization');
-    await delay(500);
-    return fleetUtilizationData;
+    return api.get('/reports/fleet-utilization');
   },
 
   getRevenue: async () => {
-    // TODO: Replace with: return api.get('/reports/revenue');
-    await delay(500);
-    return monthlyRevenueData;
+    return api.get('/reports/revenue');
   },
 
   getFuelEfficiency: async () => {
-    // TODO: Replace with: return api.get('/reports/fuel-efficiency');
-    await delay(400);
-    return dummyVehicles.map(v => {
-      const fuelLogs = dummyFuelLogs.filter(f => f.vehicleId === v.id);
-      const totalFuel = fuelLogs.reduce((sum, f) => sum + f.liters, 0);
-      const totalDist = dummyTrips
-        .filter(t => t.vehicleId === v.id && t.status === 'Completed')
-        .reduce((sum, t) => sum + t.distance, 0);
-      const maint = dummyMaintenance
-        .filter(m => m.vehicleId === v.id)
-        .reduce((sum, m) => sum + m.cost, 0);
-      const fuel = fuelLogs.reduce((sum, f) => sum + f.totalCost, 0);
-      const rev = dummyTrips
-        .filter(t => t.vehicleId === v.id && t.status === 'Completed')
-        .reduce((sum, t) => sum + t.revenue, 0);
-      const roi = v.acquisitionCost > 0
-        ? (((rev - (maint + fuel)) / v.acquisitionCost) * 100).toFixed(2)
-        : 0;
-      return {
-        id: v.id,
-        vehicle: v.regNumber,
-        name: v.name,
-        efficiency: totalFuel > 0 ? (totalDist / totalFuel).toFixed(2) : '—',
-        totalDistance: totalDist,
-        totalFuel,
-        fuelCost: fuel,
-        maintenanceCost: maint,
-        totalCost: fuel + maint,
-        revenue: rev,
-        roi,
-      };
-    });
+    return api.get('/reports/fuel-efficiency');
   },
 
   getTripsReport: async (filters = {}) => {
-    // TODO: Replace with: return api.get('/reports/trips', { params: filters });
-    await delay(400);
-    return tripsByRegionData;
+    return api.get('/reports/trips', { params: filters });
   },
 };
 
 // ===== NOTIFICATIONS API =====
 export const notificationsAPI = {
   getAll: async () => {
-    // TODO: Replace with: return api.get('/notifications');
-    await delay(300);
-    return dummyNotifications;
+    return api.get('/notifications');
   },
 
   markRead: async (id) => {
-    // TODO: Replace with: return api.patch(`/notifications/${id}/read`);
-    await delay(200);
-    return { success: true };
+    return api.patch(`/notifications/${id}/read`);
   },
 
   markAllRead: async () => {
-    // TODO: Replace with: return api.patch('/notifications/read-all');
-    await delay(300);
-    return { success: true };
+    return api.patch('/notifications/read-all');
   },
 };
 
